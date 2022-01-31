@@ -73,7 +73,7 @@ export const ${caseName}Slice = createSlice({
     		state.data.push(action.payload)
     	},
     	[${caseName}Update.fulfilled]: (state, action) => {
-    		state.data.map(e => {
+    		state.data = state.data.map(e => {
     			if(e.id === action.payload.id){
     				e = action.payload.data
     			}
@@ -95,22 +95,28 @@ export default ${caseName}Slice.reducer
 
 const run = async () => {
 	console.log('List :');
-	['create component', 'create route pages', 'create store'].map((data, key) => {
+	['create component', 'create route pages', 'create store', 'setup for tailwindcss with sass'].map((data, key) => {
 		console.log( `(${key})` , data)
 	})
 	const choose = prompt("Choose one : ");
-	const name = prompt("Name file : ");
+	
 
 	const input = {
-		name,
+		name: '',
 		code: ''
 	}
-	var caseName = String(name)[0].toUpperCase() + name.slice(1, name.indexOf('.'))
-	var fixName = String(name)[0].toUpperCase() + name.slice(1)
+	var fixName, caseName
+	if(Number(choose) !== 3){
+		const name = prompt("Name file : ");
+		input.name = name
+		fixName = String(name)[0].toUpperCase() + name.slice(1)
+		caseName = String(name)[0].toUpperCase() + name.slice(1, name.indexOf('.'))
+	}
 	// component
-	if(Number(choose) === 0){
-		createDir('component', input, fixName)
-		input.code = `import React from 'react'
+	switch(Number(choose)){
+		case 0:
+			createDir('component', input, fixName)
+			input.code = `import React from 'react'
 import {
 	useDispatch, useSelector
 } from 'react-redux'
@@ -123,11 +129,10 @@ export default function ${caseName}() {
 		</div>
 	)
 }`
-	}
-	// route
-	if(Number(choose) === 1){
-		createDir('route', input, fixName)
-		input.code = `import React from 'react'
+			break;
+		case 1:
+			createDir('route', input, fixName)
+			input.code = `import React from 'react'
 import {
 	useDispatch, useSelector
 } from 'react-redux'
@@ -145,15 +150,14 @@ export default function ${caseName}() {
 		</div>
 	)
 }`
-	}
-	// store
-	if(Number(choose) === 2){
-		var caseName = String(name)[0].toLowerCase() + name.slice(1, name.indexOf('.'))
-		var fixName = String(name)[0].toLowerCase() + name.slice(1)
-		createDir('store', input, fixName)
-		var isCrud = await createCrud(caseName, input)
-		if(!isCrud){
-		input.code = `import { createSlice } from '@reduxjs/toolkit'
+			break;
+		case 2:
+			var caseName = String(name)[0].toLowerCase() + name.slice(1, name.indexOf('.'))
+			var fixName = String(name)[0].toLowerCase() + name.slice(1)
+			createDir('store', input, fixName)
+			var isCrud = await createCrud(caseName, input)
+			if(!isCrud){
+			input.code = `import { createSlice } from '@reduxjs/toolkit'
 
 var initialState = {
 	name: '${input.name}'
@@ -173,19 +177,52 @@ export const {handle} = ${caseName}Slice.actions
 
 export default ${caseName}Slice.reducer`	
 		}
+			break;
+		case 3:
+			const { exec } = require("child_process");
+			exec("npm install -D tailwindcss postcss autoprefixer sass && npx tailwindcss init -p", (error, stdout, stderr) => {
+			    if (error) {
+			        console.log(`error: ${error.message}`);
+			        // return;
+			    }
+			    if (stderr) {
+			        console.log(`stderr: ${stderr}`);
+			        // return;
+			    }
+			    console.log(stdout);
+			    fs.writeFile('./src/tailwind.sass', `
+@tailwind base
+@tailwind components
+@tailwind utilities
+` , err => {})
+			fs.writeFile('./tailwind.config.js', `
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}`, err => {})
+			console.log('successfuly setup')
+		});
+			break;
 	}
-
-	fs.writeFile('./src/' + input.name, input.code, err => {
-	  if (err) {
-	    console.error(err)
-	    return
-	  }
-	  console.log('create successfuly')
-	  const choose = prompt("Run again (y/n) : ");
-	  if(choose == 'y'){
-	  	run()
-	  }
-	})
+	if(input.name){
+		fs.writeFile('./src/' + input.name, input.code, err => {
+		  if (err) {
+		    console.error(err)
+		    return
+		  }
+		  console.log('create successfuly')
+		  const choose = prompt("Run again (y/n) : ");
+		  if(choose == 'y'){
+		  	run()
+		  }
+		})
+	}
 }
 
 run()
