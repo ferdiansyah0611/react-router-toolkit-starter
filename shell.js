@@ -152,10 +152,9 @@ export default function ${caseName}() {
 }`
 			break;
 		case 2:
-			var caseName = String(name)[0].toLowerCase() + name.slice(1, name.indexOf('.'))
-			var fixName = String(name)[0].toLowerCase() + name.slice(1)
 			createDir('store', input, fixName)
 			var isCrud = await createCrud(caseName, input)
+			caseName = caseName.toLowerCase()
 			if(!isCrud){
 			input.code = `import { createSlice } from '@reduxjs/toolkit'
 

@@ -6,7 +6,10 @@
     "dev:all": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "build:firebase": "npm run build && firebase deploy"
+    "build:firebase": "npm run build && firebase deploy",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",
@@ -17,7 +20,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
-    "prompt-sync": "^4.2.0",
+    "prompt-sync": "^4.1.6",
     "vite": "^2.7.2"
   }
 }
