@@ -5,7 +5,8 @@
     "dev": "vite",
     "dev:all": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:firebase": "npm run build && firebase deploy"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.1",

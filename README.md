@@ -11,6 +11,12 @@ cd react-router-toolkit-starter && npm i
 Start shell
 ```bash
 node shell.js
+# output
+# (0) create component
+# (1) create route pages
+# (2) create store
+# (3) setup for tailwindcss with sass
+# Choose one : 
 ```
 ### Path resolve
 ```javascript
@@ -23,6 +29,14 @@ import YourRoute from '@r/YourRoute'
 // store
 import YourStore from '@s/YourStore'
 
+```
+### Start server in all ip
+```bash
+npm run dev:all
+```
+### Build and deploy to firebase
+```bash
+npm run build:firebase
 ```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

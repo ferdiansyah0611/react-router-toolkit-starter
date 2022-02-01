@@ -9,7 +9,6 @@ export default function Home(){
   const to = useNavigate()
 	return(
 		<div>
-			<p>home</p>
 			<header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React + React Router Dom + Redux Toolkit!</p>
