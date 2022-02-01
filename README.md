@@ -2,7 +2,7 @@
 Starter for react, react-router-dom, and @reduxjs/toolkit. With shell to generate create component, route, and store with CRUD createAsyncThunk.
 ### Installation
 ```bash
-git clone https://github.com/ferdiansyah/0611/react-router-toolkit-starter
+git clone https://github.com/ferdiansyah0611/react-router-toolkit-starter.git
 ```
 ```bash
 cd react-router-toolkit-starter && npm i
