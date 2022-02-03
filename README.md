@@ -1,5 +1,5 @@
 ## react-router-toolkit-starter
-Starter for react, react-router-dom, and @reduxjs/toolkit. With shell to generate create component, route, style, and store with CRUD createAsyncThunk.
+Starter for react, react-router-dom, and @reduxjs/toolkit. With shell to generate create component, route, style, library, and store with CRUD createAsyncThunk.
 ### Installation
 ```bash
 git clone https://github.com/ferdiansyah0611/react-router-toolkit-starter.git
@@ -12,10 +12,11 @@ Start shell
 ```bash
 node shell.js
 # output
-# (0) create component
-# (1) create route pages
-# (2) create store
-# (3) setup for tailwindcss with sass
+# [0] create component
+# [1] create route pages
+# [2] create store
+# [3] setup for tailwindcss with sass
+# [4] generate firebase storage upload & remove (v8)
 # Choose one : 
 # Name file : (yourfile.{jsx,js,tsx})
 ```

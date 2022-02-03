@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+// you can choose fetch/axios/or more lib
+const API = fetch
 // setup your headers in here
-const headers = {}
+const headers = {
+	'Content-Type': 'application/json'
+}
+const stringify = (data) => JSON.stringify(data)
 
 var initialState = {
 	name: 'caseName',
@@ -8,29 +13,29 @@ var initialState = {
 }
 
 export const caseNameGet = createAsyncThunk('caseName/get', async() => {
-	var data = await fetch('url', {
+	var data = await API('url', {
 		headers: headers
 	})
 	return await data.json()
 })
 export const caseNameAdd = createAsyncThunk('caseName/add', async(body, thunkAPI) => {
-	var data = await fetch('url', {
+	var data = await API('url', {
 		method: 'POST',
-		body: body,
+		body: stringify(body),
 		headers: headers
 	})
 	return await data.json()
 })
 export const caseNameUpdate = createAsyncThunk('caseName/update', async(body, thunkAPI) => {
-	var data = await fetch('url/' + body.id, {
+	var data = await API('url/' + body.id, {
 		method: 'PATCH',
-		body: body,
+		body: stringify(body),
 		headers: headers
 	})
 	return await data.json()
 })
 export const caseNameDelete = createAsyncThunk('caseName/delete', async(body, thunkAPI) => {
-	var data = await fetch('url/' + body.id, {
+	var data = await API('url/' + body.id, {
 		method: 'DELETE',
 		headers: headers
 	})
