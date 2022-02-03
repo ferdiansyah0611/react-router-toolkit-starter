@@ -1,5 +1,5 @@
 ## react-router-toolkit-starter
-Starter for react, react-router-dom, and @reduxjs/toolkit. With shell to generate create component, route, and store with CRUD createAsyncThunk.
+Starter for react, react-router-dom, and @reduxjs/toolkit. With shell to generate create component, route, style, and store with CRUD createAsyncThunk.
 ### Installation
 ```bash
 git clone https://github.com/ferdiansyah0611/react-router-toolkit-starter.git
@@ -17,6 +17,7 @@ node shell.js
 # (2) create store
 # (3) setup for tailwindcss with sass
 # Choose one : 
+# Name file : (yourfile.{jsx,js,tsx})
 ```
 ### Path resolve
 ```javascript
@@ -28,8 +29,24 @@ import YourComponent from '@c/YourComponent'
 import YourRoute from '@r/YourRoute'
 // store
 import YourStore from '@s/YourStore'
+// style
+import YourStyle from '@style/YourStyle'
 
 ```
+### Customize
+You can customize for generate in folder '__shell' like a route, style, and more.
+### Add shell in the existing project? Yes you can
+NOT CD IN YOUR PROJECT!
+- Clone
+```bash
+git clone https://github.com/ferdiansyah0611/react-router-toolkit-starter.git
+```
+- cd root clone
+```bash
+cd react-router-toolkit-starter
+```
+ - Remove all folder except shell.js and folder _shell
+- Copy and paste to your existing project
 ### Start server in all ip
 ```bash
 npm run dev:all
