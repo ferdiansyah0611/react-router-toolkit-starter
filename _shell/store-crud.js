@@ -66,7 +66,7 @@ export const caseNameSlice = createSlice({
     		})
     	},
     	[caseNameDelete.fulfilled]: (state, action) => {
-    		state.data.filter(e => e.id !== action.payload.id)
+    		state.data = state.data.filter(e => e.id !== action.payload)
     	},
   	},
 })

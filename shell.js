@@ -131,9 +131,20 @@ class Shell{
 				createDir(this.config.directory.store, input, fixName)
 				var isCrud = await createCrud(caseName, input)
 				if(!isCrud){
-					var txt = this.read(this.config.rootShell + 'store.js')
-					var code = txt.toString().replaceAll('appSlice', caseName + 'Slice').replaceAll('namestore', input.name)
-					input.code = String(code)
+					var isCrudReducer = prompt('Create CRUD reducer *optional : ')
+					if(isCrudReducer){
+						var txt = this.read(this.config.rootShell + 'store-crud-reducer.js')
+						var firstCase = caseName[0].toUpperCase() + caseName.slice(1)
+						var code = txt.toString().replaceAll('app', caseName)
+						.replaceAll('namestore', input.name)
+						.replaceAll('NameExport', firstCase)
+						.replaceAll('// import', `// import {handle${firstCase}, reset${firstCase}, create${firstCase}, update${firstCase}, remove${firstCase}} from @s/${input.name}`)
+						input.code = String(code)
+					}else{
+						var txt = this.read(this.config.rootShell + 'store.js')
+						var code = txt.toString().replaceAll('appSlice', caseName + 'Slice').replaceAll('namestore', input.name)
+						input.code = String(code)
+					}
 				}
 				break;
 			// tailwindcss
