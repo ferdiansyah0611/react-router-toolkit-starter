@@ -17,6 +17,7 @@ node shell.js
 # [2] create store
 # [3] setup for tailwindcss with sass
 # [4] generate firebase storage upload & remove (v8)
+# [5] generate route crud for store
 # Choose one : 
 # Name file : (yourfile.{jsx,js,tsx})
 ```

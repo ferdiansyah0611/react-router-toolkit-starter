@@ -14,6 +14,6 @@ export const appSlice = createSlice({
 	},
 	extraReducers: {},
 })
-export const {} = appSlice.actions
+export const {handle} = appSlice.actions
 
 export default appSlice.reducer

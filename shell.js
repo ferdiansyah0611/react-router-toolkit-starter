@@ -19,7 +19,13 @@ class Shell{
 		}
 		this.createDir = this.createDir.bind(this)
 		this.createCrud = this.createCrud.bind(this)
+		this.append = this.append.bind(this)
 		this.run()
+	}
+	async append(file, first, end = null){
+		var txt = await fs.readFileSync(file, 'utf8')
+		txt = txt.toString()
+		fs.writeFileSync(file, first + txt + (end || ''))
 	}
 	createDir(root, fixName){
 		var dir = prompt(`Directory file (root folder: /src/${root}) *optional : `);
@@ -87,7 +93,8 @@ class Shell{
 			'create route pages',
 			'create store',
 			'setup for tailwindcss with sass',
-			'generate firebase storage upload & remove (v8)'
+			'generate firebase storage upload & remove (v8)',
+			'generate route crud for store'
 		].map((data, key) => {
 			console.log( `[${key}]` , data)
 		})
@@ -103,7 +110,8 @@ class Shell{
 			caseName = String(name)[0].toUpperCase() + name.slice(1, name.indexOf('.'))
 		}
 
-		var list = [
+		const list = [
+			// component
 			{
 				id: 0,
 				action: async() => {
@@ -118,6 +126,7 @@ class Shell{
 					input.code = String(code)
 				}
 			},
+			// route
 			{
 				id: 1,
 				action: async() => {
@@ -132,6 +141,7 @@ class Shell{
 					input.code = String(code)
 				}
 			},
+			// CRUD reducer
 			{
 				id: 2,
 				action: async() => {
@@ -157,6 +167,7 @@ class Shell{
 					}
 				}
 			},
+			// tailwind
 			{
 				id: 3,
 				action: async() => {
@@ -166,8 +177,8 @@ class Shell{
 					exec(install_tailwind, (error, stdout, stderr) => {
 						this.copy(this.config.rootShell + 'tailwind.sass', './src/tailwind.sass')
 						this.copy(this.config.rootShell + 'tailwind.config.js', './tailwind.config.js')
+						fs.appendFileSync('./src/main.jsx', "\n import './tailwind.sass'")
 						this.log('Successfuly setup')
-						this.log(`Don't forget to import tailwind.sass in ./src`)
 					})
 				}
 			},
@@ -182,6 +193,39 @@ class Shell{
 					this.log(`import {storage, upload, remove} from '@service/firebase-storage.js'`)
 				}
 			},
+			{
+				id: 5,
+				action: async() => {
+					input.name = null
+					var store = prompt('Store name (user) : ')
+					createDir(this.config.directory.route + '/' + store, fixName)
+					var upperName = String(store)[0].toUpperCase() + store.slice(1),
+					fullDir = './src/' + this.config.directory.route + '/' + store + '/',
+					fullDirName = fullDir + upperName
+					if(store){
+						var generateCreateoredit = () => {
+							var txt = this.read(this.config.rootShell + 'crud/createoredit.jsx')
+							var code = txt.toString().replaceAll('storename', store)
+							this.write(fullDirName + 'createoredit.jsx', code)
+						}
+						var generateShow = () => {
+							var txt = this.read(this.config.rootShell + 'crud/show.jsx')
+							var code = txt.toString().replaceAll('storename', store)
+							this.write(fullDirName + 'show.jsx', code)
+						}
+						var generateTable = () => {
+							var txt = this.read(this.config.rootShell + 'crud/table.jsx')
+							var code = txt.toString().replaceAll('storename', store)
+							this.write(fullDirName + 'table.jsx', code)
+						}
+						generateCreateoredit()
+						generateShow()
+						generateTable()
+					}
+					var dirImport = '@r/' + store + '/' + upperName
+					this.append('./src/' + this.config.directory.route + '/index.jsx', `import ${upperName}createoredit from '${dirImport}createoredit'\nimport ${upperName}show from '${dirImport}show'\nimport ${upperName}table from '${dirImport}table'\n`)
+				}
+			}
 		]
 		var find = list.find((check) => {
 			if(check.id === Number(choose)){
@@ -192,14 +236,14 @@ class Shell{
 		if(!find){
 			return
 		}
-		if(input.name){
+		if(input.code){
 			this.write('./src/' + input.name, input.code)
-			this.log('create successfuly')
-			const choose = prompt("Run again (y/n) : ");
-			if(choose == 'y'){
-				this.run = this.run.bind(this)
-				this.run()
-			}
+		}
+		this.log('create successfuly')
+		const runAgain = prompt("Run again (y/n) : ");
+		if(runAgain == 'y'){
+			this.run = this.run.bind(this)
+			this.run()
 		}
 	}
 }
