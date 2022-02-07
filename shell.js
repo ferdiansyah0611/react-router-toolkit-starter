@@ -156,7 +156,7 @@ class Shell{
 						url = url || 'http://localhost:8000/api/user'
 						this.input.code = ``
 						var txt = this.read(this.config.rootShell + 'store-crud.js')
-						var code = txt.toString().replaceAll('caseName', caseName).replaceAll('url', url)
+						var code = txt.toString().replaceAll('caseName', caseName).replaceAll('BASEURL', url)
 						this.input.code = String(code)
 					}else{
 						var isCrudReducer = prompt('Create CRUD reducer *optional : ')

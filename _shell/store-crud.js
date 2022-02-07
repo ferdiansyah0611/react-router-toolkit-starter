@@ -1,15 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 // CONFIG
-const BASE = 'url'
+const BASE = 'BASEURL'
 const ID = 'id'
-// you can choose fetch/axios/or more lib
-const API = fetch
 // setup your headers in here
 const headers = {
 	'Content-Type': 'application/json'
 }
-// if you want access token:
-// const auth = () => JSON.parse(localStorage.getItem('auth')) || {}
 const stringify = (data) => JSON.stringify(data)
 
 var initialState = {
@@ -18,41 +15,42 @@ var initialState = {
 }
 
 export const caseNameGet = createAsyncThunk('caseName/get', async() => {
-	var data = await API(BASE, {
+	var response = await axios.get(BASE, {
 		headers: headers
 	})
-	return await data.json()
+	return response.data
 })
 export const caseNameGetId = createAsyncThunk('caseName/get/id', async() => {
-	var data = await API(BASE, {
+	var response = await axios.get(BASE, {
 		headers: headers
 	})
-	return await data.json()
+	return response.data
 })
-export const caseNameAdd = createAsyncThunk('caseName/add', async(body, thunkAPI) => {
-	var data = await API(BASE, {
+export const caseNameAdd = createAsyncThunk('caseName/add', async(body) => {
+	var response = await axios({
+		url: BASE,
 		method: 'POST',
-		body: stringify(body),
+		data: body,
 		headers: headers
 	})
-	return await data.json()
+	return response.data
 })
-export const caseNameUpdate = createAsyncThunk('caseName/update', async(body, thunkAPI) => {
-	var data = await API(BASE + '/' + body[ID], {
+export const caseNameUpdate = createAsyncThunk('caseName/update', async(body) => {
+	var response = await axios({
+		url: BASE + '/' + body[ID],
 		method: 'PATCH',
-		body: stringify(body),
+		data: body,
 		headers: headers
 	})
-	var response = await data.json()
-	return Object.assign(response, {id: body[ID]})
+	return Object.assign(response.data, {id: body[ID]})
 })
-export const caseNameDelete = createAsyncThunk('caseName/delete', async(body, thunkAPI) => {
-	var data = await API(BASE + '/' + body[ID], {
+export const caseNameDelete = createAsyncThunk('caseName/delete', async(body) => {
+	var response = await axios({
+		url: BASE + '/' + body[ID],
 		method: 'DELETE',
 		headers: headers
 	})
-	var response = await data.json()
-	return Object.assign(response, {id: body[ID]})
+	return Object.assign(response.data, {id: body[ID]})
 })
 
 export const caseNameSlice = createSlice({
