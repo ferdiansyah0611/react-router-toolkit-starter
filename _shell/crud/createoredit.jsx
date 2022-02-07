@@ -12,6 +12,9 @@ export default function nameCreateOrEdit(props) {
 	const {id} = useParams()
 	const dispatch = useDispatch()
 	const storename = useSelector(state => state.storename.data)
+	// handle
+	const [error, seterror] = React.useState('')
+	const [onsubmit, setonsubmit] = React.useState(false)
 	// change your field input
 	const [input, setinput] = React.useState({
 		username: ''
@@ -41,14 +44,19 @@ export default function nameCreateOrEdit(props) {
 	// submit form
 	const submit = (e) => {
 		e.preventDefault()
-		if(id){
-			dispatch(storenameUpdate({...input, id: id})).then(() => {
+		try{
+			setonsubmit(true)
+			if(id){
+				await dispatch(storenameUpdate({...input, id: id}))
 				console.log('Edited')
-			})
-		}else{
-			dispatch(storenameAdd(input)).then(() => {
+			}else{
+				await dispatch(storenameAdd(input))
 				console.log('Saved')
-			})
+			}
+		}catch(e){
+			seterror(e.message)
+		}finally{
+			setonsubmit(false)
 		}
 	}
 	return(
@@ -56,12 +64,16 @@ export default function nameCreateOrEdit(props) {
 			<form onSubmit={submit} action="/">
 				<div className="container-form">
 					<h3>{id ? 'Edit' :'Add'} Data</h3>
+					{
+						error && <div className="alert-error">{error}</div>
+					}
 					<div>
 						<label htmlFor=""></label>
 						<input type="text" className="input-primary" placeholder="username" name="username" value={input.username} onChange={change} />
 					</div>
-					<textarea className="input-primary" placeholder="Question" name="quest" value={input.quest} onChange={change}/>
-					<button type="submit" className="btn-primary">Submit</button>
+					<div>
+						<button disabled={onsubmit} type="submit" className="btn-primary">Submit</button>
+					</div>
 				</div>
 			</form>
 		</div>

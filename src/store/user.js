@@ -3,28 +3,28 @@ import { createSlice } from '@reduxjs/toolkit'
 const ID = 'id'
 
 var initialState = {
-	name: 'namestore',
+	name: 'store/user.js',
 	data: [],
 	find: {}
 }
 
-export const appSlice = createSlice({
-	name: 'namestore',
+export const userSlice = createSlice({
+	name: 'store/user.js',
 	initialState,
 	reducers: {
-		handleNameExport(state, action){
+		handleUser(state, action){
 			state[action.payload.name] = action.payload.value
 		},
-		resetNameExport(state, action){
+		resetUser(state, action){
 			state.data = action.payload || []
 		},
-		createNameExport(state, action){
+		createUser(state, action){
 			state.data.push(action.payload)
 		},
-		findOneNameExport(state, action){
+		findOneUser(state, action){
 			state.find = state.find((e) => e[ID] === action.payload) || {}
 		},
-		updateNameExport(state, action){
+		updateUser(state, action){
 			state.data = state.data.map(e => {
     			if(e[ID] === action.payload[ID]){
     				e = Object.assign(e, action.payload)
@@ -32,13 +32,13 @@ export const appSlice = createSlice({
     			return e
     		})
 		},
-		removeNameExport(state, action){
+		removeUser(state, action){
 			state.data = state.data.filter(e => e[ID] !== action.payload)
 		}
 	},
 	extraReducers: {},
 })
-// import
-export const {handleNameExport, resetNameExport, createNameExport, findOneNameExport, updateNameExport, removeNameExport} = appSlice.actions
+// import {handleUser, resetUser, createUser, findOneUser, updateUser, removeUser} from @s/store/user.js
+export const {handleUser, resetUser, createUser, findOneUser, updateUser, removeUser} = userSlice.actions
 
-export default appSlice.reducer
+export default userSlice.reducer

@@ -43,7 +43,7 @@ class Shell{
 			this.input.name = `${root}/` + fixName
 		}
 	}
-	createCrud(caseName){
+	async createCrud(caseName){
 		var crud = prompt(`Create CRUD using createAsyncThunk (y/n) : `);
 		if(crud === 'y'){
 			var url = prompt(`Base url (http://localhost:8000/api/user) : `);
@@ -53,6 +53,8 @@ class Shell{
 			var code = txt.toString().replaceAll('caseName', caseName).replaceAll('url', url)
 			this.input.code = String(code)
 			return new Promise((res) => res(true))
+		}else{
+			return new Promise((res) => res(false))
 		}
 	}
 	generateStyle(caseName, typeSelect){
@@ -148,8 +150,15 @@ class Shell{
 					fixName = fixName.toLowerCase()
 					caseName = caseName.toLowerCase()
 					createDir(this.config.directory.store, fixName)
-					var isCrud = await createCrud(caseName)
-					if(!isCrud){
+					var crud = prompt(`Create CRUD using createAsyncThunk (y/n) : `);
+					if(crud === 'y'){
+						var url = prompt(`Base url (http://localhost:8000/api/user) : `);
+						url = url || 'http://localhost:8000/api/user'
+						this.input.code = ``
+						var txt = this.read(this.config.rootShell + 'store-crud.js')
+						var code = txt.toString().replaceAll('caseName', caseName).replaceAll('url', url)
+						this.input.code = String(code)
+					}else{
 						var isCrudReducer = prompt('Create CRUD reducer *optional : ')
 						if(isCrudReducer){
 							var txt = this.read(this.config.rootShell + 'store-crud-reducer.js')
@@ -157,7 +166,7 @@ class Shell{
 							var code = txt.toString().replaceAll('app', caseName)
 							.replaceAll('namestore', input.name)
 							.replaceAll('NameExport', firstCase)
-							.replaceAll('// import', `// import {handle${firstCase}, reset${firstCase}, create${firstCase}, update${firstCase}, remove${firstCase}} from @s/${input.name}`)
+							.replaceAll('// import', `// import {handle${firstCase}, reset${firstCase}, create${firstCase}, findOne${firstCase}, update${firstCase}, remove${firstCase}} from @s/${input.name}`)
 							input.code = String(code)
 						}else{
 							var txt = this.read(this.config.rootShell + 'store.js')
