@@ -1,13 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import http from '@service/http'
 // CONFIG
 const BASE = 'BASEURL'
 const ID = 'id'
-// setup your headers in here
-const headers = {
-	'Content-Type': 'application/json'
-}
-const stringify = (data) => JSON.stringify(data)
 
 var initialState = {
 	name: 'caseName',
@@ -15,40 +10,29 @@ var initialState = {
 }
 
 export const caseNameGet = createAsyncThunk('caseName/get', async() => {
-	var response = await axios.get(BASE, {
-		headers: headers
-	})
+	var response = await http(BASE)
 	return response.data
 })
 export const caseNameGetId = createAsyncThunk('caseName/get/id', async() => {
-	var response = await axios.get(BASE, {
-		headers: headers
-	})
+	var response = await http(BASE)
 	return response.data
 })
 export const caseNameAdd = createAsyncThunk('caseName/add', async(body) => {
-	var response = await axios({
-		url: BASE,
+	var response = await http(BASE, {
 		method: 'POST',
 		data: body,
-		headers: headers
 	})
 	return response.data
 })
 export const caseNameUpdate = createAsyncThunk('caseName/update', async(body) => {
-	var response = await axios({
-		url: BASE + '/' + body[ID],
-		method: 'PATCH',
+	var response = await http(BASE + '/' + body[ID], {
 		data: body,
-		headers: headers
 	})
 	return Object.assign(response.data, {id: body[ID]})
 })
 export const caseNameDelete = createAsyncThunk('caseName/delete', async(body) => {
-	var response = await axios({
-		url: BASE + '/' + body[ID],
+	var response = await http(BASE + '/' + body[ID], {
 		method: 'DELETE',
-		headers: headers
 	})
 	return Object.assign(response.data, {id: body[ID]})
 })
@@ -72,15 +56,15 @@ export const caseNameSlice = createSlice({
     		state.data.push(action.payload)
     	},
     	[caseNameUpdate.fulfilled]: (state, action) => {
-    		state.data = state.data.map(e => {
-    			if(e[ID] === action.payload[ID]){
-    				e = Object.assign(e, action.payload)
+    		state.data = state.data.map(value => {
+    			if(value[ID] === action.payload[ID]){
+    				value = Object.assign(value, action.payload)
     			}
-    			return e
+    			return value
     		})
     	},
     	[caseNameDelete.fulfilled]: (state, action) => {
-    		state.data = state.data.filter(e => e[ID] !== action.payload[ID])
+    		state.data = state.data.filter(value => value[ID] !== action.payload[ID])
     	},
   	},
 })
