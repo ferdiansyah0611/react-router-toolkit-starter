@@ -53,6 +53,10 @@ cd react-router-toolkit-starter
 You can testing api with node-fetch at file test/api. Example to run test
 ```bash
 node test/api.js user.get
+node test/api.js user.add
+node test/api.js user.update 10
+node test/api.js user.remove 10
+node test/api.js user.id 10
 ```
 Example code to customize api
 ```javascript
@@ -68,6 +72,18 @@ run([
         }
     }),
 ])
+```
+Automatically request url will be:
+```javascript
+const GET = "https://localhost:8000/user" /*GET*/
+const ADD = "https://localhost:8000/user" /*POST*/
+const UPDATE = "https://localhost:8000/user/:argument" /*PATCH*/
+const REMOVE = "https://localhost:8000/user/:argument" /*DELETE*/
+const ID = "https://localhost:8000/user/:argument" /*GET*/
+// :argument put in value shell.
+// Example
+// node test/api.js user.update 10
+// 10 is :argument
 ```
 ### Start server in all ip
 ```bash

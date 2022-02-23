@@ -53,7 +53,7 @@ const crud = (path, baseURL, option) => {
 		{
 			path: path + '.update',
 			action: () => {
-				return update(option.update)
+				return update(baseURL + '/' + arg[1], option.update)
 			}
 		},
 		{
@@ -87,7 +87,7 @@ const run = (action) => {
 	Example:
 	node test/api.js user.get
 	node test/api.js user.add
-	node test/api.js user.update
+	node test/api.js user.update yourid
 	node test/api.js user.remove yourid
 	node test/api.js user.id yourid
 */
