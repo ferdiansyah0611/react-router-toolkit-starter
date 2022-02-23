@@ -77,6 +77,7 @@ const run = (action) => {
 	arg.map(async(value) => {
 		var find = action.find((v) => v.path === value)
 		if(find){
+			console.log('path: ', value)
 			response = await find.action(value)
 			console.log('response: ', response)
 		}
