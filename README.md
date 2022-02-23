@@ -49,6 +49,26 @@ cd react-router-toolkit-starter
 ```
  - Remove all folder except shell.js and folder _shell
 - Copy and paste to your existing project
+### Testing API
+You can testing api with node-fetch at file test/api. Example to run test
+```bash
+node test/api.js user.get
+```
+Example code to customize api
+```javascript
+run([
+    ...crud('user', 'https://localhost:8000/user', {
+        // form input on add
+        add: {
+            name: 'ferdiansyah'
+        },
+        // form input on update
+        update: {
+            name: 'safina sahda'
+        }
+    }),
+])
+```
 ### Start server in all ip
 ```bash
 npm run dev:all
